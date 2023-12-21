@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['carrito'])) {
+  header('Location:./index.php');
+}
+$arreglo = $_SESSION['carrito'];
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -230,22 +237,20 @@
                       <th>Total</th>
                     </thead>
                     <tbody>
+                    <?php
+                    $total=0;
+                    for ($i=0; $i < count($arreglo) ; $i++) { 
+                      $total =$total+ ($arreglo[$i]['Precio']*$arreglo[$i]['Cantidad']);
+                    
+                    ?>
                       <tr>
-                        <td>Top Up T-Shirt <strong class="mx-2">x</strong> 1</td>
-                        <td>$250.00</td>
+                        <td><?php echo $arreglo[$i]['Nombre']?></td>
+                        <td><?php echo $arreglo[$i]['Precio']?></td>
                       </tr>
-                      <tr>
-                        <td>Polo Shirt <strong class="mx-2">x</strong>   1</td>
-                        <td>$100.00</td>
-                      </tr>
-                      <tr>
-                        <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
-                        <td class="text-black">$350.00</td>
-                      </tr>
-                      <tr>
-                        <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-                        <td class="text-black font-weight-bold"><strong>$350.00</strong></td>
-                      </tr>
+                      
+                      <?php
+                    }
+                      ?>
                     </tbody>
                   </table>
 

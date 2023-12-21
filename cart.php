@@ -1,48 +1,51 @@
 <?php
 session_start();
 include './php/conexion.php';
-if (isset($_SESSION['carrito'])) {
+if (isset($_SESSION['carrito']) && !empty($_GET['id'])) {
+  $id_producto = mysqli_real_escape_string($conexion, $_GET['id']);
   if (isset($_SESSION['carrito'])) {
-    $arreglo=$_SESSION['carrito'];
-    $encontro=false;
-    $numero=0;
-    for ($i=0; $i < count($arreglo) ; $i++){
-      if ($arreglo[$i]['Id']==$_GET['id']) {
-        $encontro=true;
-        $numero=$i;
+    $arreglo = $_SESSION['carrito'];
+    $encontro = false;
+    $numero = 0;
+    for ($i = 0; $i < count($arreglo); $i++) {
+      if ($arreglo[$i]['Id'] == $_GET['id']) {
+        $encontro = true;
+        $numero = $i;
       }
     }
     if ($encontro == true) {
-      $arreglo[$numero]['Cantidad']=$arreglo[$numero]['Cantidad']+1;
-      $_SESSION['carrito']=$arreglo;
-    }else {
+      $arreglo[$numero]['Cantidad'] = $arreglo[$numero]['Cantidad'] + 1;
+      $_SESSION['carrito'] = $arreglo;
+    } else {
 
       $nombre = "";
-    $precio = "";
-    $imagen = "";
-    $res = $conexion->query('select * from productos where id=' . $_GET['id']) or die($conexion->error);
-    $fila = mysqli_fetch_row($res);
-    $nombre = $fila[1];
-    $precio = $fila[3];
-    $imagen = $fila[4];
-    $arregloNuevo = array(
-      'Id' => $_GET['id'],
-      'Nombre' => $nombre,
-      'Precio' => $precio,
-      'Imagen' => $imagen,
-      'Cantidad' => 1
-    );
-    array_push($arreglo, $arregloNuevo);
-    $_SESSION['carrito']=$arreglo;
+      $precio = "";
+      $imagen = "";
+      $id_producto = mysqli_real_escape_string($conexion, $_GET['id']);
+      $res = $conexion->query("SELECT * FROM productos WHERE id = $id_producto") or die($conexion->error);
+            $fila = mysqli_fetch_row($res);
+      $nombre = $fila[1];
+      $precio = $fila[3];
+      $imagen = $fila[4];
+      $arregloNuevo = array(
+        'Id' => $_GET['id'],
+        'Nombre' => $nombre,
+        'Precio' => $precio,
+        'Imagen' => $imagen,
+        'Cantidad' => 1
+      );
+      array_push($arreglo, $arregloNuevo);
+      $_SESSION['carrito'] = $arreglo;
     }
   }
 } else {
-  if (isset($_GET['id'])) {
+  if (isset($_GET['id']) && !empty($_GET['id'])) {
     $nombre = "";
     $precio = "";
     $imagen = "";
-    $res = $conexion->query('select * from productos where id=' . $_GET['id']) or die($conexion->error);
-    $fila = mysqli_fetch_row($res);
+    $id_producto = mysqli_real_escape_string($conexion, $_GET['id']);
+    $res = $conexion->query("SELECT * FROM productos WHERE id = $id_producto") or die($conexion->error);
+        $fila = mysqli_fetch_row($res);
     $nombre = $fila[1];
     $precio = $fila[3];
     $imagen = $fila[4];
@@ -104,9 +107,11 @@ if (isset($_SESSION['carrito'])) {
                 </thead>
                 <tbody>
                   <?php
+                  $total = 0;
                   if (isset($_SESSION['carrito'])) {
                     $arregloCarrito = $_SESSION['carrito'];
                     for ($i = 0; $i < count($arregloCarrito); $i++) {
+                      $total=$total + ($arregloCarrito[$i]['Precio'] * $arregloCarrito[$i]['Cantidad']);
                   ?>
                       <tr>
                         <td class="product-thumbnail">
@@ -119,16 +124,17 @@ if (isset($_SESSION['carrito'])) {
                         <td>
                           <div class="input-group mb-3" style="max-width: 120px;">
                             <div class="input-group-prepend">
-                              <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
+                              <button class="btn btn-outline-primary js-btn-minus btnIncrementar" type="button">&minus;</button>
                             </div>
-                            <input type="text" class="form-control text-center" value="<?php echo $arregloCarrito[$i]['Cantidad']; ?>" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                            <input type="text" class="form-control text-center txtCantidad" data-precio="<?php echo $arregloCarrito[$i]['Precio']; ?>" data-id="<?php echo $arregloCarrito[$i]['Id']; ?>" value="<?php echo $arregloCarrito[$i]['Cantidad']; ?>" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
                             <div class="input-group-append">
-                              <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
+                              <button class="btn btn-outline-primary js-btn-plus btnIncrementar" type="button">&plus;</button>
                             </div>
                           </div>
                         </td>
-                        <td>$<?php echo $arregloCarrito[$i]['Precio'] * $arregloCarrito[$i]['Cantidad']; ?></td>
-                        <td><a href="#" class="btn btn-primary btn-sm btnEliminar" data-id="<?php echo $arregloCarrito[$i]['Id'];?>">X</a></td>
+                        <td class="cant<?php echo $arregloCarrito[$i]['Id']; ?>">
+                          $<?php echo $arregloCarrito[$i]['Precio'] * $arregloCarrito[$i]['Cantidad']; ?></td>
+                        <td><a href="#" class="btn btn-primary btn-sm btnEliminar" data-id="<?php echo $arregloCarrito[$i]['Id']; ?>">X</a></td>
                       </tr>
                   <?php }
                   } ?>
@@ -174,7 +180,7 @@ if (isset($_SESSION['carrito'])) {
                     <span class="text-black">Subtotal</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black">$230.00</strong>
+                    <strong class="text-black">$<?php echo $total;?></strong>
                   </div>
                 </div>
                 <div class="row mb-5">
@@ -182,7 +188,7 @@ if (isset($_SESSION['carrito'])) {
                     <span class="text-black">Total</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black">$230.00</strong>
+                    <strong class="text-black">$<?php echo $total;?></strong>
                   </div>
                 </div>
 
@@ -210,8 +216,50 @@ if (isset($_SESSION['carrito'])) {
   <script src="js/aos.js"></script>
   <script src="js/main.js"></script>
   <script>
-    
+    $(document).ready(function() {
+      $(".btnEliminar").click(function(event) {
+        event.preventDefault();
+        var id = $(this).data('id');
+        var boton = $(this);
+        $.ajax({
+          method: 'POST',
+          url: './php/eliminarCarrito.php',
+          data: {
+            id: id
+          }
+        }).done(function(respuesta) {
+          boton.parent('td').parent('tr').remove();
+        });
+      });
+      $(".txtCantidad").keyup(function() {
+        var cantidad = $(this).val();
+        var precio = $(this).data('precio');
+        var id = $(this).data('id');
+        incrementar(cantidad, precio, id);
+      });
+      $(".btnIncrementar").click(function(){
+        var precio = $(this).parent('div').parent('div').find('input').data('precio');
+        var id = $(this).parent('div').parent('div').find('input').data('id');
+        var cantidad = $(this).parent('div').parent('div').find('input').val();
+        incrementar(cantidad, precio, id);
+      });
+      function incrementar(cantidad, precio, id) {
+        var mult = parseFloat(cantidad) * parseFloat(precio);
+        $(".cant" + id).text("$" + mult);
+        $.ajax({
+          method: 'POST',
+          url: './php/actualizar.php',
+          data: {
+            id: id,
+            cantidad:cantidad
+          }
+        }).done(function(respuesta) {
+          
+        });
+      }
+    });
   </script>
+  
 
 </body>
 
