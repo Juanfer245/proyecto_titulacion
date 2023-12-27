@@ -228,31 +228,36 @@ $arreglo = $_SESSION['carrito'];
             </div>
             
             <div class="row mb-5">
-              <div class="col-md-12">
-                <h2 class="h3 mb-3 text-black">Your Order</h2>
-                <div class="p-3 p-lg-5 border">
-                  <table class="table site-block-order-table mb-5">
-                    <thead>
-                      <th>Product</th>
-                      <th>Total</th>
-                    </thead>
-                    <tbody>
-                    <?php
-                    $total=0;
-                    for ($i=0; $i < count($arreglo) ; $i++) { 
-                      $total =$total+ ($arreglo[$i]['Precio']*$arreglo[$i]['Cantidad']);
-                    
-                    ?>
-                      <tr>
-                        <td><?php echo $arreglo[$i]['Nombre']?></td>
-                        <td><?php echo $arreglo[$i]['Precio']?></td>
-                      </tr>
-                      
-                      <?php
-                    }
-                      ?>
-                    </tbody>
-                  </table>
+  <div class="col-md-12">
+    <h2 class="h3 mb-3 text-black">Your Order</h2>
+    <div class="p-3 p-lg-5 border">
+      <table class="table site-block-order-table mb-5">
+        <thead>
+          <th>Product</th>
+          <th>Quantity</th> <!-- Nueva columna para la cantidad -->
+          <th>Total</th>
+        </thead>
+        <tbody>
+        <?php
+        $total = 0;
+        for ($i = 0; $i < count($arreglo); $i++) { 
+          $subtotal = $arreglo[$i]['Precio'] * $arreglo[$i]['Cantidad'];
+          $total += $subtotal;
+        ?>
+          <tr>
+            <td><?php echo $arreglo[$i]['Nombre']; ?></td>
+            <td><?php echo $arreglo[$i]['Cantidad']; ?></td> <!-- Muestra la cantidad -->
+            <td><?php echo number_format($arreglo[$i]['Precio'], 2, '.', ''); ?></td>
+          </tr>
+        <?php
+        }
+        ?>
+          <tr>
+            <td colspan="2">Order Total</td>
+            <td>$<?php echo number_format($total, 2, '.', ''); ?></td>
+          </tr>
+        </tbody>
+      </table>
 
                   <div class="border p-3 mb-3">
                     <h3 class="h6 mb-0"><a class="d-block" data-toggle="collapse" href="#collapsebank" role="button" aria-expanded="false" aria-controls="collapsebank">Direct Bank Transfer</a></h3>

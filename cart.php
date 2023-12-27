@@ -23,7 +23,7 @@ if (isset($_SESSION['carrito']) && !empty($_GET['id'])) {
       $imagen = "";
       $id_producto = mysqli_real_escape_string($conexion, $_GET['id']);
       $res = $conexion->query("SELECT * FROM productos WHERE id = $id_producto") or die($conexion->error);
-            $fila = mysqli_fetch_row($res);
+      $fila = mysqli_fetch_row($res);
       $nombre = $fila[1];
       $precio = $fila[3];
       $imagen = $fila[4];
@@ -45,7 +45,7 @@ if (isset($_SESSION['carrito']) && !empty($_GET['id'])) {
     $imagen = "";
     $id_producto = mysqli_real_escape_string($conexion, $_GET['id']);
     $res = $conexion->query("SELECT * FROM productos WHERE id = $id_producto") or die($conexion->error);
-        $fila = mysqli_fetch_row($res);
+    $fila = mysqli_fetch_row($res);
     $nombre = $fila[1];
     $precio = $fila[3];
     $imagen = $fila[4];
@@ -111,7 +111,7 @@ if (isset($_SESSION['carrito']) && !empty($_GET['id'])) {
                   if (isset($_SESSION['carrito'])) {
                     $arregloCarrito = $_SESSION['carrito'];
                     for ($i = 0; $i < count($arregloCarrito); $i++) {
-                      $total=$total + ($arregloCarrito[$i]['Precio'] * $arregloCarrito[$i]['Cantidad']);
+                      $total = $total + ($arregloCarrito[$i]['Precio'] * $arregloCarrito[$i]['Cantidad']);
                   ?>
                       <tr>
                         <td class="product-thumbnail">
@@ -151,20 +151,9 @@ if (isset($_SESSION['carrito']) && !empty($_GET['id'])) {
                 <button class="btn btn-primary btn-sm btn-block">Update Cart</button>
               </div>
               <div class="col-md-6">
-                <button class="btn btn-outline-primary btn-sm btn-block">Continue Shopping</button>
+                <a href="index.php" class="btn btn-outline-primary btn-sm btn-block">Continue Shopping</a>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <label class="text-black h4" for="coupon">Coupon</label>
-                <p>Enter your coupon code if you have one.</p>
-              </div>
-              <div class="col-md-8 mb-3 mb-md-0">
-                <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
-              </div>
-              <div class="col-md-4">
-                <button class="btn btn-primary btn-sm">Apply Coupon</button>
-              </div>
+
             </div>
           </div>
           <div class="col-md-6 pl-5">
@@ -180,7 +169,7 @@ if (isset($_SESSION['carrito']) && !empty($_GET['id'])) {
                     <span class="text-black">Subtotal</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black">$<?php echo $total;?></strong>
+                    <strong class="text-black">$<?php echo $total; ?></strong>
                   </div>
                 </div>
                 <div class="row mb-5">
@@ -188,7 +177,7 @@ if (isset($_SESSION['carrito']) && !empty($_GET['id'])) {
                     <span class="text-black">Total</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black">$<?php echo $total;?></strong>
+                    <strong class="text-black">$<?php echo $total; ?></strong>
                   </div>
                 </div>
 
@@ -237,12 +226,13 @@ if (isset($_SESSION['carrito']) && !empty($_GET['id'])) {
         var id = $(this).data('id');
         incrementar(cantidad, precio, id);
       });
-      $(".btnIncrementar").click(function(){
+      $(".btnIncrementar").click(function() {
         var precio = $(this).parent('div').parent('div').find('input').data('precio');
         var id = $(this).parent('div').parent('div').find('input').data('id');
         var cantidad = $(this).parent('div').parent('div').find('input').val();
         incrementar(cantidad, precio, id);
       });
+
       function incrementar(cantidad, precio, id) {
         var mult = parseFloat(cantidad) * parseFloat(precio);
         $(".cant" + id).text("$" + mult);
@@ -251,15 +241,15 @@ if (isset($_SESSION['carrito']) && !empty($_GET['id'])) {
           url: './php/actualizar.php',
           data: {
             id: id,
-            cantidad:cantidad
+            cantidad: cantidad
           }
         }).done(function(respuesta) {
-          
+
         });
       }
     });
   </script>
-  
+
 
 </body>
 

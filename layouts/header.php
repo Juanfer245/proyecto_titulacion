@@ -4,9 +4,9 @@
           <div class="row align-items-center">
 
             <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
-              <form action="" class="site-block-top-search">
+              <form action="./busqueda.php" class="site-block-top-search" method="GET">
                 <span class="icon icon-search2"></span>
-                <input type="text" class="form-control border-0" placeholder="Search">
+                <input type="text" class="form-control border-0" placeholder="Search" name="texto">
               </form>
             </div>
 
@@ -47,7 +47,8 @@
         <div class="container">
           <ul class="site-menu js-clone-nav d-none d-md-block">
             <li>
-              <a href="index.php">Home</a>
+            <a href="index.php?limite=0">Home</a>
+
             
             </li>
             <li>
