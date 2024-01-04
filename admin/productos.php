@@ -1,3 +1,13 @@
+<?php
+session_start();
+if (!isset($_SESSION['datos_login'])) {
+  header("Location: ../index.php");
+}
+$arregloUsuario=$_SESSION['datos_login'];
+if ($arregloUsuario['nivel'] == 'admin') {
+  header("Location: ../index.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

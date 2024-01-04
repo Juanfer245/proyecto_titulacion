@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "./conexion.php";
 if (isset($_POST['email']) &&isset($_POST['password'])) {
     $resultado = $conexion->query("select * from usuario where
@@ -10,7 +11,15 @@ if (mysqli_num_rows($resultado)>0) {
     $id_usuario=$datos_usuario[0];
     $email = $datos_usuario[3];
     $imagen_perfil = $datos_usuario[5];
-    die('Bienvenido '.$nombre);
+    $nivel=$datos_usuario[6];
+    $_SESSION['datos_login']=array(
+        'nombre'=>$nombre,
+        'id_usuario'=>$id_usuario,
+        'email'=>$email,
+        'imagen'=>$imagen_perfil,
+        'nivel'=>$nivel
+    );
+    header("Location: ../admin/");
 }else {
 header("Location:../login.php?error=Credenciales incorrectas");
 }
