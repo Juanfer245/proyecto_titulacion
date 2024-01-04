@@ -73,26 +73,26 @@
                                     ) ") or die ($conexion->error);
               }*/
               $limite = 10;
-              $totalQuery = $conexion->query('select count(*) from productos')or die($conexion->error);
+              $totalQuery = $conexion->query('select count(*) from productos') or die($conexion->error);
               $totalProductos = mysqli_fetch_row($totalQuery);
-              $totalBotones = round($totalProductos[0] /$limite);
+              $totalBotones = round($totalProductos[0] / $limite);
               if (isset($_GET['limite'])) {
-                $resultado = $conexion->query("select * from productos where inventario > 0 order by DESC limit ".$_GET['limite'].", ".$limite) or die($conexion->error);
-              }else{
-                $resultado = $conexion->query("SELECT * FROM productos WHERE inventario > 0 ORDER BY id DESC LIMIT " . $limite) or die($conexion->error);
+                $resultado = $conexion->query("select * from productos where inventario > 0 limit " . $_GET['limite'] . ", " . $limite) or die($conexion->error);
+              } else {
+                $resultado = $conexion->query("SELECT * FROM productos WHERE inventario > 0 ORDER BY id ASC LIMIT " . $limite) or die($conexion->error);
               }
               while ($fila = mysqli_fetch_array($resultado)) {
               ?>
                 <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
                   <div class="block-4 text-center border">
                     <figure class="block-4-image">
-                      <a href="shop-single.php?id=<?php echo $fila['id'];?>">
-                        <img src="images/<?php echo $fila['imagen'];?>" alt="<?php echo $fila['nombre'];?>" class="img-fluid"></a>
+                      <a href="shop-single.php?id=<?php echo $fila['id']; ?>">
+                        <img src="images/<?php echo $fila['imagen']; ?>" alt="<?php echo $fila['nombre']; ?>" class="img-fluid"></a>
                     </figure>
                     <div class="block-4-text p-4">
-                      <h3><a href="shop-single.php?id=<?php echo $fila['id'];?>"><?php echo $fila['nombre'];?></a></h3>
-                      <p class="mb-0"><?php echo $fila['descripcion'];?></p>
-                      <p class="text-primary font-weight-bold"><?php echo $fila['precio'];?></p>
+                      <h3><a href="shop-single.php?id=<?php echo $fila['id']; ?>"><?php echo $fila['nombre']; ?></a></h3>
+                      <p class="mb-0"><?php echo $fila['descripcion']; ?></p>
+                      <p class="text-primary font-weight-bold"><?php echo $fila['precio']; ?></p>
                     </div>
                   </div>
                 </div>
@@ -104,25 +104,25 @@
               <div class="col-md-12 text-center">
                 <div class="site-block-27">
                   <ul>
-                    
+
                     <?php
                     if (isset($_GET['limite'])) {
-                      if ($_GET['limite']>0) {
-                        echo '<li><a href="index.php?limite='.($_GET['limite']-10).'">&lt;</a></li>';
+                      if ($_GET['limite'] > 0) {
+                        echo '<li><a href="index.php?limite=' . ($_GET['limite'] - 10) . '">&lt;</a></li>';
                       }
                     }
-                    for ($k=0; $k < $totalBotones; $k++) { 
-                      echo '<li><a href="index.php?limite='.($k*10).'">'.($k+1).'</a></li>';
+                    for ($k = 0; $k < $totalBotones; $k++) {
+                      echo '<li><a href="index.php?limite=' . ($k * 10) . '">' . ($k + 1) . '</a></li>';
                     }
                     if (isset($_GET['limite'])) {
-                      if ($_GET['limite']+10 < $totalBotones*10) {
-                        echo '<li><a href="index.php?limite='.($_GET['limite']+10).'">&gt;</a></li>';
+                      if ($_GET['limite'] + 10 < $totalBotones * 10) {
+                        echo '<li><a href="index.php?limite=' . ($_GET['limite'] + 10) . '">&gt;</a></li>';
                       }
-                    }else{
+                    } else {
                       echo '<li><a href="index.php?limite=10">&gt;</a></li>';
                     }
                     ?>
-                    
+
                   </ul>
                 </div>
               </div>
