@@ -197,7 +197,6 @@
                   </li>
                   <?php
                     if ($arregloUsuario['nivel'] == 'admin') {
-                        # code...
                     ?>
                       <li class="nav-item">
                           <a href="./productos.php" class="nav-link">
