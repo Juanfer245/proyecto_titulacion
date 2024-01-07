@@ -45,24 +45,24 @@ order by id DESC") or die($conexion->error);
   <!-- summernote -->
   <link rel="stylesheet" href="./dashboard/plugins/summernote/summernote-bs4.min.css">
   <!-- Añadir estas líneas de código en la sección de head de tu HTML -->
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Esperar a que se cargue el DOM
-    setTimeout(function () {
-      // Ocultar la alerta de éxito después de 3 segundos
-      var successAlert = document.querySelector('.alert-success');
-      if (successAlert) {
-        successAlert.style.display = 'none';
-      }
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Esperar a que se cargue el DOM
+      setTimeout(function() {
+        // Ocultar la alerta de éxito después de 3 segundos
+        var successAlert = document.querySelector('.alert-success');
+        if (successAlert) {
+          successAlert.style.display = 'none';
+        }
 
-      // Ocultar la alerta de peligro después de 3 segundos
-      var dangerAlert = document.querySelector('.alert-danger');
-      if (dangerAlert) {
-        dangerAlert.style.display = 'none';
-      }
-    }, 3000);
-  });
-</script>
+        // Ocultar la alerta de peligro después de 3 segundos
+        var dangerAlert = document.querySelector('.alert-danger');
+        if (dangerAlert) {
+          dangerAlert.style.display = 'none';
+        }
+      }, 3000);
+    });
+  </script>
 
 
 </head>
@@ -136,7 +136,11 @@ order by id DESC") or die($conexion->error);
                   <td><?php echo $f['descripcion']; ?></td>
                   <td><?php echo $f['inventario']; ?></td>
                   <td><?php echo $f['catego']; ?></td>
-                  <td></td>
+                  <td>
+                    <button class="btn btn-danger btn-small btnEliminar" data-id="<?php echo $f['id']; ?>" data-bs-toggle="modal" data-bs-target="#modalEliminar">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </td>
                 </tr>
               <?php
               }
@@ -197,6 +201,24 @@ order by id DESC") or die($conexion->error);
         </div>
       </div>
     </div>
+    <!--modal eliminar-->
+    <div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modalEliminarLabel">Eliminar Producto</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            ¿Desea eliminar el producto?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary eliminar" data-bs-dismiss="modal">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <?php include "./layouts/footer.php"; ?>
   </div>
   <!-- ./wrapper -->
@@ -238,6 +260,27 @@ order by id DESC") or die($conexion->error);
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
+  <script>
+    $(document).ready(function() {
+      var idEliminar = -1;
+      var fila;
+      $(".btnEliminar").click(function() {
+        idEliminar = $(this).data('id');
+        fila = $(this).parent('td').parent('tr');
+      });
+      $(".eliminar").click(function() {
+        $.ajax({
+          url:'../php/eliminarproducto.php',
+          method:'POST',
+          data:{
+            id:idEliminar
+          }
+        }).done(function(res){
+        $(fila).fadeOut(1000);
+      });
+    });
+    });
+  </script>
 </body>
 
 </html>
