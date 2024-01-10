@@ -1,40 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Shoppers &mdash; Colorlib e-Commerce Template</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"> 
-    <link rel="stylesheet" href="fonts/icomoon/style.css">
+<head>
+  <title>Shoppers &mdash; Colorlib e-Commerce Template</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/magnific-popup.css">
-    <link rel="stylesheet" href="css/jquery-ui.css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
+  <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/magnific-popup.css">
+  <link rel="stylesheet" href="css/jquery-ui.css">
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/owl.theme.default.min.css">
 
 
-    <link rel="stylesheet" href="css/aos.css">
+  <link rel="stylesheet" href="css/aos.css">
 
-    <link rel="stylesheet" href="css/style.css">
-    
-  </head>
-  <body>
-  
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
   <div class="site-wrap">
-  <?php include("./layouts/header.php"); ?> 
+    <?php include("./layouts/header.php"); ?>
 
     <div class="site-section">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <h2 class="h3 mb-3 text-black">Get In Touch</h2>
+            <h2 class="h3 mb-3 text-black">Contactanos</h2>
           </div>
           <div class="col-md-7">
 
             <form action="#" method="post">
-              
+
               <div class="p-3 p-lg-5 border">
                 <div class="form-group row">
                   <div class="col-md-6">
@@ -75,16 +77,21 @@
           </div>
           <div class="col-md-5 ml-auto">
             <div class="p-4 border mb-3">
-              <span class="d-block text-primary h6 text-uppercase">New York</span>
-              <p class="mb-0">203 Fake St. Mountain View, San Francisco, California, USA</p>
+              <span class="d-block text-primary h6 text-uppercase">Quito</span>
+              <p class="mb-0">Miguel Chopeya Oe5-261</p>
+              <a href="https://www.google.com/maps?q=-0.194895,-78.489776" target="_blank" class="btn btn-primary mt-2">Ver en el mapa</a>
+            </div>
+
+            <div class="p-4 border mb-3">
+              <span class="d-block text-primary h6 text-uppercase">Cuenca</span>
+              <p class="mb-0">Av. Don Bosco 19, Cuenca</p>
+              <a href="https://www.google.com/maps?q=-0.194895,-78.489776" target="_blank" class="btn btn-primary mt-2">Ver en el mapa</a>
+
             </div>
             <div class="p-4 border mb-3">
-              <span class="d-block text-primary h6 text-uppercase">London</span>
-              <p class="mb-0">203 Fake St. Mountain View, San Francisco, California, USA</p>
-            </div>
-            <div class="p-4 border mb-3">
-              <span class="d-block text-primary h6 text-uppercase">Canada</span>
-              <p class="mb-0">203 Fake St. Mountain View, San Francisco, California, USA</p>
+              <span class="d-block text-primary h6 text-uppercase">Guayaquil</span>
+              <p class="mb-0">Av. Francisco Boloña 602, Guayaquil 090512</p>
+              <a href="https://www.google.com/maps?q=-0.194895,-78.489776" target="_blank" class="btn btn-primary mt-2">Ver en el mapa</a>
             </div>
 
           </div>
@@ -92,7 +99,7 @@
       </div>
     </div>
 
-    <?php include("./layouts/footer.php"); ?> 
+    <?php include("./layouts/footer.php"); ?>
   </div>
 
   <script src="js/jquery-3.3.1.min.js"></script>
@@ -104,6 +111,7 @@
   <script src="js/aos.js"></script>
 
   <script src="js/main.js"></script>
-    
-  </body>
+
+</body>
+
 </html>

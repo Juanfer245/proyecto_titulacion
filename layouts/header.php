@@ -19,7 +19,7 @@
             <div class="col-6 col-md-4 order-3 order-md-3 text-right">
               <div class="site-top-icons">
                 <ul>
-                  <li><a href="#"><span class="icon icon-person"></span></a></li>
+                  <li><a href="login.php"><span class="icon icon-person"></span></a></li>
                   <li><a href="#"><span class="icon icon-heart-o"></span></a></li>
                   <li>
                     <a href="cart.php" class="site-cart">
@@ -55,9 +55,6 @@
               <a href="about.php">About</a>
             
             </li>
-          
-            <li><a href="#">Catalogue</a></li>
-            <li><a href="#">New Arrivals</a></li>
             <li><a href="contact.php">Contact</a></li>
           </ul>
         </div>
