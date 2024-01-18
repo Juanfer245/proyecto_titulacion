@@ -86,6 +86,8 @@ order by id DESC") or die($conexion->error);
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <i class="fa fa-plus"></i> Insertar Producto
               </button>
+              <a href="../vista/fpdf/ReporteProducto.php" target="_blank" class="btn btn-success"><i class="fas fa-file-pdf"></i>Generar Reportes</a>
+
 
             </div><!-- /.col -->
           </div><!-- /.row -->

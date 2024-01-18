@@ -10,8 +10,7 @@ if ($arregloUsuario['nivel'] != 'admin') {
 }
 $resultado = $conexion->query("
 select ventas.*, usuario.nombre, usuario.telefono, usuario.email from ventas
-inner join usuario on ventas.id_usuario= usuario.id
-") or die($conexion->error);
+inner join usuario on ventas.id_usuario = usuario.id") or die($conexion->error);
 
 ?>
 <!DOCTYPE html>
@@ -20,12 +19,14 @@ inner join usuario on ventas.id_usuario= usuario.id
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Pedidos</title>
+    <title>Pedido</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="./dashboard/plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
@@ -44,13 +45,11 @@ inner join usuario on ventas.id_usuario= usuario.id
     <link rel="stylesheet" href="./dashboard/plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="./dashboard/plugins/summernote/summernote-bs4.min.css">
-
-
     <!-- Añadir estas líneas de código en la sección de head de tu HTML -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Esperar a que se cargue el DOM
-            setTimeout(function() {
+            setTimeout(function () {
                 // Ocultar la alerta de éxito después de 3 segundos
                 var successAlert = document.querySelector('.alert-success');
                 if (successAlert) {
@@ -83,34 +82,105 @@ inner join usuario on ventas.id_usuario= usuario.id
                         <div class="col-sm-6">
                             <h1 class="m-0">Productos</h1>
                         </div><!-- /.col -->
+                        <div class="col-sm-6 text-right">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                                <i class="fa fa-plus"></i> Insertar Producto
+                            </button>
+
+                        </div><!-- /.col -->
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
             </div>
             <!-- /.content-header -->
 
             <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <?php
+                    if (isset($_GET['error'])) {
+                        ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?php echo $_GET['error']; ?>
+                        </div>
+                    <?php } ?>
+                    <?php
+                    if (isset($_GET['success'])) {
+                        ?>
+                        <div class="alert alert-success" role="alert">
+                            Producto insertado exitosamente.
+                        </div>
+
+                    <?php } ?>
+
                     <div class="accordion" id="accordionExample">
                         <?php
-                        while ($f = mysqli_fetch_array($resultado)) {
+                        while ($f=mysqli_fetch_array($resultado)) {
                         ?>
-                            <div class="card">
-                                <div class="card-header" id="headingOne">
-                                    <h2 class="mb-0">
-                                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            Collapsible Group Item #1
-                                        </button>
-                                    </h2>
-                                </div>
+                        <div class="card">
+                            <div class="card-header" id="heading<?php echo $f['id'];?>">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="#collapse" aria-expanded="true" aria-controls="collapseOne">
+                                        <?php echo $f['fecha'].'-'.$f['nombre'];?>
+                                    </button>
+                                </h2>
+                            </div>
 
-                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                    <div class="card-body">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                    </div>
+                            <div id="collapse" class="collapse" aria-labelledby="heading<?php echo $f['id'];?>"
+                                data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <p>Nombre Cliente: <?php echo $f['nombre'];?></p>
+                                    <p>Email Cliente: <?php echo $f['email'];?></p>
+                                    <p>Telefono: <?php echo $f['telefono'];?></p>
+                                    <p>Status: <?php echo $f['status'];?></p>
+                                    <p class="h6">Datos de envio</p>
+                                    <?php
+                                        $re=$conexion->query("select * from envios where id_venta=".$f['id'])or die ($conexion->error);
+                                        $fila=mysqli_fetch_row($re);
+                                    ?>
+                                    <p>Direccion <?php echo $fila[3];?></p>
+                                    <p>Estado <?php echo $fila[4];?></p>
+                                    <p>C.P <?php echo $fila[5];?></p>
+                                    <table class="table">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <?php
+              $re=$conexion->query("select productos_venta.*, productos.nombre, productos.talla, productos.color
+              from productos_venta inner join productos on productos_venta.id_producto = productos.id
+              where productos_venta.id_producto = productos.id") or die ($conexion->error);
+              while ($f2 = mysqli_fetch_array($re)) {
+
+              ?>
+                <tr>
+                  <td><?php echo $f2['id']; ?></td>
+                  <td><?php echo $f2['nombre']; ?></td>
+                  <td><?php echo number_format($f2['precio'],2,'.',''); ?></td>
+                  <td><?php echo $f2['cantidad']; ?></td>
+                  <td><?php echo $f2['subtotal']; ?></td>
+                </tr>
+              <?php
+              }
+              ?>
+            </tbody>
+          </table>
                                 </div>
                             </div>
-                            <?php }?>
-
+                        </div>
+                        <?php } ?>
                     </div>
+                </div><!-- /.container-fluid -->
+            </section>
             <!-- /.content -->
         </div>
         <!-- Modal -->
@@ -125,11 +195,13 @@ inner join usuario on ventas.id_usuario= usuario.id
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="nombre">Nombre</label>
-                                <input type="text" name="nombre" placeholder="nombre" id="nombre" class="form-control" required>
+                                <input type="text" name="nombre" placeholder="nombre" id="nombre" class="form-control"
+                                    required>
                             </div>
                             <div class="form-group">
                                 <label for="descripcion">Descripcion</label>
-                                <input type="text" name="descripcion" placeholder="descripcion" id="descripcion" class="form-control" required>
+                                <input type="text" name="descripcion" placeholder="descripcion" id="descripcion"
+                                    class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="imagen">Imagen</label>
@@ -137,11 +209,13 @@ inner join usuario on ventas.id_usuario= usuario.id
                             </div>
                             <div class="form-group">
                                 <label for="precio">Precio</label>
-                                <input type="number" min="0" name="precio" placeholder="precio" id="precio" class="form-control" required>
+                                <input type="number" min="0" name="precio" placeholder="precio" id="precio"
+                                    class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="inventario">Inventario</label>
-                                <input type="number" min="0" name="inventario" placeholder="inventario" id="inventario" class="form-control" required>
+                                <input type="number" min="0" name="inventario" placeholder="inventario" id="inventario"
+                                    class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="categoria">Categoria</label>
@@ -164,7 +238,8 @@ inner join usuario on ventas.id_usuario= usuario.id
             </div>
         </div>
         <!--modal eliminar-->
-        <div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+        <div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -194,11 +269,13 @@ inner join usuario on ventas.id_usuario= usuario.id
                             <input type="hidden" id="idEdit" name="id">
                             <div class="form-group">
                                 <label for="nombreEdit">Nombre</label>
-                                <input type="text" name="nombre" placeholder="nombre" id="nombreEdit" class="form-control" required>
+                                <input type="text" name="nombre" placeholder="nombre" id="nombreEdit"
+                                    class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="descripcionEdit">Descripcion</label>
-                                <input type="text" name="descripcion" placeholder="descripcion" id="descripcionEdit" class="form-control" required>
+                                <input type="text" name="descripcion" placeholder="descripcion" id="descripcionEdit"
+                                    class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="imagen">Imagen</label>
@@ -206,11 +283,13 @@ inner join usuario on ventas.id_usuario= usuario.id
                             </div>
                             <div class="form-group">
                                 <label for="precioEdit">Precio</label>
-                                <input type="number" min="0" name="precio" placeholder="precio" id="precioEdit" class="form-control" required>
+                                <input type="number" min="0" name="precio" placeholder="precio" id="precioEdit"
+                                    class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="inventarioEdit">Inventario</label>
-                                <input type="number" min="0" name="inventario" placeholder="inventario" id="inventarioEdit" class="form-control" required>
+                                <input type="number" min="0" name="inventario" placeholder="inventario"
+                                    id="inventarioEdit" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="categoriaEdit">Categoria</label>
@@ -269,28 +348,37 @@ inner join usuario on ventas.id_usuario= usuario.id
     <!-- AdminLTE for demo purposes -->
     <script src="./dashboard/dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             var idEliminar = -1;
             var idEditar = -1;
             var fila;
-            $(".btnEliminar").click(function() {
+            $(".btnEliminar").click(function () {
                 idEliminar = $(this).data('id');
                 fila = $(this).parent('td').parent('tr');
             });
-            $(".eliminar").click(function() {
+            $(".eliminar").click(function () {
                 $.ajax({
                     url: '../php/eliminarproducto.php',
                     method: 'POST',
                     data: {
                         id: idEliminar
                     }
-                }).done(function(res) {
+                }).done(function (res) {
                     $(fila).fadeOut(1000);
                 });
             });
-            $(".btnEditar").click(function() {
+            $(".btnEditar").click(function () {
                 idEditar = $(this).data('id');
                 var nombre = $(this).data('nombre');
                 var descripcion = $(this).data('descripcion');
